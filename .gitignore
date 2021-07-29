@@ -148,3 +148,6 @@ authen.txt
 
 # large datasets
 large_datasets/*
+
+# ds_store
+.DS_Store
