@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import random
+from torchvision import transforms
 
 
 # rainy_dataset中的每一条数据，都是一个形如：
@@ -24,10 +25,11 @@ class rainy_dataset(Dataset):
     # data_len=-1则表示选取"ground_truth"文件夹中的所有图像
     # rainy_data_len表示选取多少个对应的rainy的图像
     # eg:若rainy_data_len=3，则“52.jpg”对应到的rainy_image为"52_1.jpg,52_2.jpg,52_3.jpg""
-    def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_data_len=1):
+    def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_data_len=1, normalize = True):
         self.path = data_path+"/"+data_subpath
         self.image_labels = []
         self.rainy_range = rainy_data_len
+        self.normalize=normalize
 
         all_img_labels=[]
         ground_path=self.path+"/"+DEFAULT_ground_path
@@ -97,6 +99,10 @@ class rainy_dataset(Dataset):
             im = im.resize((DEFAULT_image_size,DEFAULT_image_size))
             tuple_self[i]=im
 
+        if self.normalize:
+            trans = transforms.Compose([transforms.ToTensor()])
+            for i in range(len(tuple_self)):
+                tuple_self[i]=(trans(tuple_self[i])-0.5)/0.5
         tuple_self=tuple(tuple_self)
         return tuple_len, tuple_self
 
