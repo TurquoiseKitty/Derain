@@ -142,12 +142,14 @@ cython_debug/
 
 # vscode
 .vscode/*
+__pycache__/*
 
 # authen
 authen.txt
 
 # large datasets
 large_datasets/*
+large_datasets.zip
 
 # ds_store
 .DS_Store

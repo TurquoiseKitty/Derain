@@ -13,4 +13,15 @@ dataloader = DataLoader(dataset, batch_size = 5, shuffle=True)
 
 ground_batch, rain_batch = next(iter(dataloader))
 model = ResNetModel(args = None)
-train(model, dataloader, steps=7, epochs=5, lr=1000, optimizer_lr=0.001,demo=True)
+train(
+    model, 
+    dataloader,
+    steps=3, 
+    epochs=5, 
+    from_model_name = "",
+    lr=100, 
+    optimizer_lr=0.001,
+    demo=False,
+    use_cuda=False,
+    save_name = "first_model"
+    )

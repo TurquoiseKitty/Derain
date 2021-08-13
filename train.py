@@ -24,14 +24,25 @@ def single_forward(fake_image_batch,model,steps,lr=0.05):
 
 
 
-def train(model, dataloader, steps, epochs, lr=0.05, optimizer_lr=0.01, demo = False):
+def train(model, dataloader, steps, epochs, from_model_name="", lr=0.05, optimizer_lr=0.01, demo = False, use_cuda=False, cuda_index=0, save_name = ""):
 
     optimizer = optim.Adam(model.parameters(), lr=optimizer_lr)
     criterion = nn.MSELoss()
+    if from_model_name != "":
+        model = torch.load("model_saved/"+from_model_name+".pth")
+        model.eval()
+    if use_cuda:    
+        torch.cuda.set_device(cuda_index)
+        model = model.cuda(cuda_index)
 
     for epoch in range(epochs):
+        sum_loss = 0
         print("epoch : ",epoch)
         for ground_batch, rainy_batch in dataloader:
+            if use_cuda:
+                ground_batch = ground_batch.cuda(cuda_index)
+                rainy_batch = rainy_batch.cuda(cuda_index)
+
             optimizer.zero_grad()
             # ---- single forward
             fake_image_batch = single_forward(rainy_batch,model,steps,lr)
@@ -39,9 +50,12 @@ def train(model, dataloader, steps, epochs, lr=0.05, optimizer_lr=0.01, demo = F
             ground_image_batch = ground_batch.unsqueeze(0).repeat(steps,1,1,1,1)
 
             loss = criterion(fake_image_batch,ground_image_batch)
+            sum_loss += loss.item()
             # print(loss.item())
             loss.backward()
             optimizer.step()
+        
+        print("loss : ",sum_loss)
 
     if demo:
         # select one image and show the effect
@@ -50,6 +64,11 @@ def train(model, dataloader, steps, epochs, lr=0.05, optimizer_lr=0.01, demo = F
         show_multi_image(ground_batch)
         for bat in fake_img_batch:
             show_multi_image(bat)
+
+    if save_name != "":
+        torch.save(model, "model_saved/"+save_name+".pth")
+
+
 
                 
 
