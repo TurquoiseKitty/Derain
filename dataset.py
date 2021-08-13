@@ -6,13 +6,16 @@ import re
 import sys
 import random
 from torchvision import transforms
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure, imshow, axis
+from matplotlib.image import imread
+import numpy as np
 
 
 # rainy_dataset中的每一条数据，都是一个形如：
 # (ground_img, rainy_img1, rainy_img2, ...)
 # 的tuple
-# 调用__getitem__时，会返回(tuple_len,data_sample)
-# tuple_len为data_sample的长度，data_sample即形如(ground_img, rainy_img1, rainy_img2, ...)
+# 调用__getitem__时，会返回data_sample即形如(ground_img, rainy_img1, rainy_img2, ...)
 DEFAULT_data_path="toy_datasets"
 DEFAULT_data_subpath="training"    # 如果是用来test则选择"testing"文件夹
 DEFAULT_ground_path="ground_truth"
@@ -25,10 +28,10 @@ class rainy_dataset(Dataset):
     # data_len=-1则表示选取"ground_truth"文件夹中的所有图像
     # rainy_data_len表示选取多少个对应的rainy的图像
     # eg:若rainy_data_len=3，则“52.jpg”对应到的rainy_image为"52_1.jpg,52_2.jpg,52_3.jpg""
-    def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_data_len=1, normalize = True):
+    def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_extent=1, normalize = True):
         self.path = data_path+"/"+data_subpath
         self.image_labels = []
-        self.rainy_range = rainy_data_len
+        self.rainy_extent = rainy_extent
         self.normalize=normalize
 
         all_img_labels=[]
@@ -60,8 +63,8 @@ class rainy_dataset(Dataset):
             for filename in os.listdir(rainy_path):
                 if form.match(filename):
                     count+=1
-            if count < rainy_data_len:
-                raise Exception("rainy_data_len too large!")
+            if count < rainy_extent:
+                raise Exception("rainy_extent too large!")
         except Exception as exp:
             for string in exp.args:
                 print(string)
@@ -74,15 +77,14 @@ class rainy_dataset(Dataset):
     def __getitem__(self, index):
         label=self.image_labels[index]
         path_ground=self.path+"/"+DEFAULT_ground_path+"/"+label+"."+DEFAULT_format
-        path_rainy=[]
-        for rainy_label in range(1,self.rainy_range+1):
-            path_rainy.append(self.path+"/"+DEFAULT_rainy_path+"/"+label+"_"+str(rainy_label)+"."+DEFAULT_format)
+        
+        path_rainy=self.path+"/"+DEFAULT_rainy_path+"/"+label+"_"+str(self.rainy_extent)+"."+DEFAULT_format
 
-        tuple_len = self.rainy_range + 1
+        tuple_len = 2
         tuple_self = []
         tuple_self.append(Image.open(path_ground))
-        for a_path_rainy in path_rainy:
-            tuple_self.append(Image.open(a_path_rainy))
+        
+        tuple_self.append(Image.open(path_rainy))
         # crop and reshape
         for i in range(tuple_len):
             im = tuple_self[i]
@@ -104,5 +106,26 @@ class rainy_dataset(Dataset):
             for i in range(len(tuple_self)):
                 tuple_self[i]=(trans(tuple_self[i])-0.5)/0.5
         tuple_self=tuple(tuple_self)
-        return tuple_len, tuple_self
+        return tuple_self
+
+def show_tensor_image(img):
+    img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
+    img=Image.fromarray(img_array)
+    plt.figure()
+    plt.imshow(img)
+
+def show_multi_image(img_batch):
+    fig = figure()
+    number_of_files = len(img_batch)
+    for i in range(number_of_files):
+        a=fig.add_subplot(1,number_of_files,i+1)
+        img = img_batch[i]
+        img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
+        img=Image.fromarray(img_array)
+        image = img
+        imshow(image,cmap='Greys_r')
+        axis('off')
+
+
+
 
