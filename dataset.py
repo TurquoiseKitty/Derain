@@ -30,6 +30,7 @@ class rainy_dataset(Dataset):
     # eg:若rainy_data_len=3，则“52.jpg”对应到的rainy_image为"52_1.jpg,52_2.jpg,52_3.jpg""
     def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_extent=1, normalize = True):
         self.path = data_path+"/"+data_subpath
+        self.train = True if data_subpath == "training" else False
         self.image_labels = []
         self.rainy_extent = rainy_extent
         self.normalize=normalize
@@ -86,20 +87,39 @@ class rainy_dataset(Dataset):
         
         tuple_self.append(Image.open(path_rainy))
         # crop and reshape
-        for i in range(tuple_len):
-            im = tuple_self[i]
-            width, height = im.size
+
+        im_ground = tuple_self[0]
+        im_rain = tuple_self[1]
+
+        if self.train:
+            width, height = im_ground.size
             left=0
             top=0
-            if width > height :
-                bottom=height
-                right=height
+            if width < DEFAULT_image_size or height < DEFAULT_image_size:
+
+                if width > height :
+                    bottom=height
+                    right=height
+                else:
+                    bottom=width
+                    right=width
+                im_ground = im_ground.crop((left, top, right, bottom))
+                im_rain = im_rain.crop((left, top, right, bottom))
+                im_ground = im_ground.resize((DEFAULT_image_size,DEFAULT_image_size))
+                im_rain = im_rain.resize((DEFAULT_image_size,DEFAULT_image_size))
+                tuple_self[0]=im_ground
+                tuple_self[1]=im_rain
+
             else:
-                bottom=width
-                right=width
-            im = im.crop((left, top, right, bottom))
-            im = im.resize((DEFAULT_image_size,DEFAULT_image_size))
-            tuple_self[i]=im
+                left = random.randint(0,width-DEFAULT_image_size-1)
+                right = left + DEFAULT_image_size
+                top = random.randint(0,height-DEFAULT_image_size-1)
+                bottom = top + DEFAULT_image_size
+                im_ground = im_ground.crop((left, top, right, bottom))
+                im_rain = im_rain.crop((left, top, right, bottom))
+                tuple_self[0]=im_ground
+                tuple_self[1]=im_rain
+
 
         if self.normalize:
             trans = transforms.Compose([transforms.ToTensor()])
@@ -107,6 +127,7 @@ class rainy_dataset(Dataset):
                 tuple_self[i]=(trans(tuple_self[i])-0.5)/0.5
         tuple_self=tuple(tuple_self)
         return tuple_self
+
 
 def show_tensor_image(img):
     img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
