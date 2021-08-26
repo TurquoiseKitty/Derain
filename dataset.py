@@ -129,11 +129,14 @@ class rainy_dataset(Dataset):
         return tuple_self
 
 
-def show_tensor_image(img):
+def show_tensor_image(img,save=False,save_folder=None,save_name=None):
     img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
     img=Image.fromarray(img_array)
-    plt.figure()
-    plt.imshow(img)
+    if not save:
+        plt.figure()
+        plt.imshow(img)
+    else:
+        img.save(save_folder+"/"+save_name)
 
 def show_multi_image(img_batch):
     fig = figure()

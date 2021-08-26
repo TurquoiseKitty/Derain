@@ -42,9 +42,15 @@ def init_params(net):
 def train(model, dataloader, steps, epochs, from_model_name="", lr=0.05, optimizer_lr=0.01, demo = False, use_cuda=False, cuda_index=0, save_name = ""):
     print("train model, lr="+str(lr)+", optimizer_lr="+str(optimizer_lr))
     losses = []
+    mse_losses = []
+    positive_energys = []
+    negative_energys = []
+    cd_losses = []
+
     optimizer = optim.Adam(model.parameters(), lr=optimizer_lr)
-    scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
+    # scheduler = StepLR(optimizer, step_size=30, gamma=0.1)
     criterion = nn.MSELoss()
+    
     if from_model_name != "":
         model = torch.load("model_saved/"+from_model_name+".pth")
         model.eval()
@@ -68,19 +74,34 @@ def train(model, dataloader, steps, epochs, from_model_name="", lr=0.05, optimiz
             
             # ---- single forward
             fake_image_batch = single_forward(rainy_batch,model,steps,lr)
+
+            positive_energy = model(ground_batch.detach()).sum()
+            negative_energy = model(fake_image_batch[-1].detach()).sum()
+
+
             # ---- single forward
             ground_image_batch = ground_batch.unsqueeze(0).repeat(steps,1,1,1,1)
 
-            loss = criterion(fake_image_batch,ground_image_batch)
-            losses.append(loss.detach().cpu().numpy())
+            loss_mse = criterion(fake_image_batch,ground_image_batch)
+            loss_cd = positive_energy - negative_energy
+            loss = loss_mse + 0.01*loss_cd +1e-4*positive_energy ** 2 + 1e-4*negative_energy ** 2
+            
+
+            
             sum_loss += loss.item()
             # print(loss.item())
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+            mse_losses.append(loss_mse.detach().cpu().numpy())
+            positive_energys.append(positive_energy.detach().cpu().numpy())
+            negative_energys.append(negative_energy.detach().cpu().numpy())
+            cd_losses.append(loss_cd.detach().cpu().numpy())
+            losses.append(loss.detach().cpu().numpy())
         
         print("loss : ",sum_loss)
-        scheduler.step()
+        # scheduler.step()
 
     if demo:
         # select one image and show the effect
@@ -93,7 +114,7 @@ def train(model, dataloader, steps, epochs, from_model_name="", lr=0.05, optimiz
     if save_name != "":
         torch.save(model, "model_saved/"+save_name+".pth")
 
-    return losses
+    return mse_losses, positive_energys, negative_energys,cd_losses, losses
 
 
 
