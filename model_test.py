@@ -52,8 +52,16 @@ def model_test(
 if __name__ == "__main__":
 
     model_test(
-        model_name="model_lr30_001",
-        lr=30,
+        model_name="CDmodel_lr1_001",
+        lr=1,
+        test_dataset="rainy_image_dataset",
+        rainy_extent=3,
+        use_cuda = False
+    )
+
+    model_test(
+        model_name="model_lr1_005",
+        lr=1,
         test_dataset="rainy_image_dataset",
         rainy_extent=3,
         use_cuda = False

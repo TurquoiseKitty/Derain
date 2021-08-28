@@ -10,7 +10,7 @@ from train import single_forward, train
 from model_test import model_test
 
 
-for lr in [1, 5, 10]:
+for lr in [1, 2, 5]:
     for optimizer_lr in [0.001,0.005]:
         dataset=rainy_dataset(data_path="large_datasets/rainy_image_dataset",data_len=900, rainy_extent=3,normalize=True)
         dataloader = DataLoader(dataset, batch_size = 10, shuffle=True)
@@ -30,7 +30,7 @@ for lr in [1, 5, 10]:
             model, 
             dataloader,
             steps=5, 
-            epochs=30,
+            epochs=100,
             from_model_name = "",
             lr=lr,
             optimizer_lr=optimizer_lr,
