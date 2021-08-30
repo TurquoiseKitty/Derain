@@ -153,3 +153,6 @@ large_datasets.zip
 
 # ds_store
 .DS_Store
+
+jupyter*
+playground*

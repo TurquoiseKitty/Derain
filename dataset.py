@@ -13,9 +13,9 @@ import numpy as np
 
 
 # rainy_dataset中的每一条数据，都是一个形如：
-# (ground_img, rainy_img1, rainy_img2, ...)
+# (ground_img, rainy_img)
 # 的tuple
-# 调用__getitem__时，会返回data_sample即形如(ground_img, rainy_img1, rainy_img2, ...)
+# 调用__getitem__时，会返回data_sample即形如(ground_img, rainy_img)
 DEFAULT_data_path="toy_datasets"
 DEFAULT_data_subpath="training"    # 如果是用来test则选择"testing"文件夹
 DEFAULT_ground_path="ground_truth"
@@ -26,8 +26,6 @@ DEFAULT_image_size=128
 
 class rainy_dataset(Dataset):
     # data_len=-1则表示选取"ground_truth"文件夹中的所有图像
-    # rainy_data_len表示选取多少个对应的rainy的图像
-    # eg:若rainy_data_len=3，则“52.jpg”对应到的rainy_image为"52_1.jpg,52_2.jpg,52_3.jpg""
     def __init__(self, data_path=DEFAULT_data_path, data_subpath=DEFAULT_data_subpath, data_len=-1, rainy_extent=1, normalize = True):
         self.path = data_path+"/"+data_subpath
         self.train = True if data_subpath == "training" else False
@@ -75,13 +73,13 @@ class rainy_dataset(Dataset):
     def __len__(self):
         return len(self.image_labels)
 
+    # training image will be cropped to 128 * 128, testing image not processed
     def __getitem__(self, index):
         label=self.image_labels[index]
         path_ground=self.path+"/"+DEFAULT_ground_path+"/"+label+"."+DEFAULT_format
         
         path_rainy=self.path+"/"+DEFAULT_rainy_path+"/"+label+"_"+str(self.rainy_extent)+"."+DEFAULT_format
 
-        tuple_len = 2
         tuple_self = []
         tuple_self.append(Image.open(path_ground))
         
@@ -128,28 +126,53 @@ class rainy_dataset(Dataset):
         tuple_self=tuple(tuple_self)
         return tuple_self
 
-
-def show_tensor_image(img,save=False,save_folder=None,save_name=None):
+def show_tensor_image(img,show=True,save=False,save_folder=None,save_name=None):
     img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
     img=Image.fromarray(img_array)
-    if not save:
+    if show:
         plt.figure()
         plt.imshow(img)
-    else:
-        img.save(save_folder+"/"+save_name)
+        plt.show()
+    if save:
+        img.save(save_folder+"/"+save_name+".jpg")
 
-def show_multi_image(img_batch):
+def show_multi_image(img_group,show=True,save=False,save_folder=None,save_name=None):
     fig = figure()
-    number_of_files = len(img_batch)
+    number_of_files = len(img_group)
     for i in range(number_of_files):
         a=fig.add_subplot(1,number_of_files,i+1)
-        img = img_batch[i]
+        img = img_group[i]
         img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
         img=Image.fromarray(img_array)
-        image = img
-        imshow(image,cmap='Greys_r')
+        if save:
+            img.save(save_folder+"/"+save_name+"_"+str(i)+".jpg")
+        imshow(img,cmap='Greys_r')
         axis('off')
 
+    if show:
+        plt.show()
 
+def show_concat_image(img_group,show=True,save=False,save_folder=None,save_name=None):
+    marg = np.ones((img_group[0].shape[1], 10, 3), np.uint8) * 255
+
+    number_of_files = len(img_group)
+    img_list = []
+    for i in range(number_of_files):
+        img = img_group[i]
+        img_array = np.array((img.permute(1,2,0).detach()+1)/2*255).astype(np.uint8)
+        img_list.append(img_array)   
+        img_list.append(marg)
+
+    img_list.pop()
+    # pdb.set_trace()
+    im_all = np.concatenate(img_list, 1)
+    img = Image.fromarray(im_all)
+
+    if show:
+        plt.figure()
+        plt.imshow(img)
+        plt.show()
+    if save:
+        img.save(save_folder+"/"+save_name+".jpg")
 
 

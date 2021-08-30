@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 from model import simple_energy
 import torch
 from model import simple_energy, ResNetModel
-from train import single_forward, train
+# from train import single_forward, train
 from model_test import model_test
 
 
