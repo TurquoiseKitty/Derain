@@ -1,0 +1,10 @@
+model name : model_two
+trained on dataset : rainy_image_dataset
+    with rainy extent : 3
+steps of inner loop : 5
+learning rate for inner loop : 1
+optimizer learning rate : 0.005
+lambda for cd loss : 0.001
+lambda for reg loss : 0
+
+50 epochs are set 

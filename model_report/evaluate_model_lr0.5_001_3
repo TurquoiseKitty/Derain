@@ -1,6 +1,0 @@
-model name : model_lr0.5_001
-rainy extent : 3
-criteria : ssim
-loss evaluation : 0.5155012
-criteria : psnr
-loss evaluation : 21.298637

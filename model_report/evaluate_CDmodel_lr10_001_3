@@ -1,6 +1,0 @@
-model name : CDmodel_lr10_001
-rainy extent : 3
-criteria : ssim
-loss evaluation : 0.23059751
-criteria : psnr
-loss evaluation : 14.982433

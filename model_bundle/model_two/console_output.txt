@@ -1,0 +1,42 @@
+nohup: ignoring input
+training model : model_two
+lr : 1, opti_lr : 0.005, lam_cd : 0.001, lam_reg : 0
+epoch :  0
+loss : 309.18 | pos eng: 32117.65, neg eng: 29770.22 | cd: 2347.43 | mse: 306.83
+epoch :  1
+loss : 262.11 | pos eng: 37539.86, neg eng: 34942.21 | cd: 2597.65 | mse: 259.51
+epoch :  2
+loss : 234.86 | pos eng: 47260.28, neg eng: 43918.40 | cd: 3341.89 | mse: 231.52
+epoch :  3
+loss : 202.91 | pos eng: 34071.01, neg eng: 31508.54 | cd: 2562.48 | mse: 200.35
+epoch :  4
+loss : 200.86 | pos eng: 35233.19, neg eng: 32931.41 | cd: 2301.78 | mse: 198.56
+epoch :  5
+loss : 189.46 | pos eng: 39505.90, neg eng: 36530.32 | cd: 2975.58 | mse: 186.48
+epoch :  6
+loss : 189.57 | pos eng: 36955.34, neg eng: 33714.53 | cd: 3240.81 | mse: 186.33
+epoch :  7
+loss : 191.89 | pos eng: 19840.78, neg eng: 17876.21 | cd: 1964.57 | mse: 189.93
+epoch :  8
+loss : 735.18 | pos eng: 21612.13, neg eng: 18171.67 | cd: 3440.46 | mse: 731.74
+epoch :  9
+loss : 505.71 | pos eng: 17605.68, neg eng: 17575.71 | cd: 29.97 | mse: 505.68
+epoch :  10
+loss : 487.64 | pos eng: 17422.72, neg eng: 17417.60 | cd: 5.13 | mse: 487.63
+epoch :  11
+loss : 507.77 | pos eng: 17266.49, neg eng: 17264.16 | cd: 2.33 | mse: 507.77
+epoch :  12
+loss : 490.66 | pos eng: 17129.70, neg eng: 17129.61 | cd: 0.09 | mse: 490.66
+epoch :  13
+loss : 499.25 | pos eng: 18028.00, neg eng: 18010.96 | cd: 17.03 | mse: 499.23
+epoch :  14
+loss : 485.76 | pos eng: 17973.61, neg eng: 17973.61 | cd: 0.00 | mse: 485.76
+epoch :  15
+loss : 492.38 | pos eng: 17973.63, neg eng: 17973.63 | cd: 0.00 | mse: 492.38
+epoch :  16
+loss : 513.49 | pos eng: 17973.63, neg eng: 17973.63 | cd: 0.00 | mse: 513.49
+epoch :  17
+loss : 470.87 | pos eng: 17973.63, neg eng: 17973.63 | cd: 0.00 | mse: 470.87
+epoch :  18
+loss : 483.37 | pos eng: 17973.63, neg eng: 17973.63 | cd: 0.00 | mse: 483.37
+epoch :  19

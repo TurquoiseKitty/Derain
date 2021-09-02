@@ -3,79 +3,51 @@ from PIL import Image
 from dataset import rainy_dataset, show_tensor_image, show_multi_image
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
-from model import simple_energy
 import torch
-from model import simple_energy, ResNetModel
-# from train import single_forward, train
-from model_test import model_test
+from model import ResNetModel
+from model_train import single_forward, train
+from model_test import test
+import os
+
+DEFAULT_RAINY_EXTENT = 3
+
+def loss_plot(path,loss_file_name,losses):
+    # get loss list
+    plt.figure()
+    plt.plot(losses)
+    plt.savefig(path+"/"+loss_file_name+".png")
 
 
-for lr in [1, 2, 5]:
-    for optimizer_lr in [0.001,0.005]:
-        dataset=rainy_dataset(data_path="large_datasets/rainy_image_dataset",data_len=900, rainy_extent=3,normalize=True)
-        dataloader = DataLoader(dataset, batch_size = 10, shuffle=True)
+def complete_training(model_name,lr=1,optimizer_lr=0.001,lambda_cd=0.01, lambda_reg=1e-4,steps=5,from_model=""):
+    dataset=rainy_dataset(data_path="large_datasets/rainy_image_dataset",data_len=900, rainy_extent=DEFAULT_RAINY_EXTENT,normalize=True)
+    dataloader = DataLoader(dataset, batch_size = 10, shuffle=True)
+    model = ResNetModel(args = None)
 
-        ground_batch, rain_batch = next(iter(dataloader))
-        model = ResNetModel(args = None)
+    mse_losses, positive_energys, negative_energys,cd_losses, losses = train(
+        dataloader, "rainy_image_dataset", DEFAULT_RAINY_EXTENT, epochs=50, model_name=model_name, save_path="model_bundle", from_model_path=from_model, use_cuda=True, cuda_index=4, \
+                            args={'steps':steps,'lr':lr,'optimizer_lr':optimizer_lr,'lambda_cd':lambda_cd,'lambda_reg':lambda_reg})
 
-        optimizer_lr_str = ""
-        if optimizer_lr == 0.001:
-            optimizer_lr_str = "001"
-        elif optimizer_lr == 0.005:
-            optimizer_lr_str = "005"
-        
+    # plot these losses
+    directory = "model_bundle/"+model_name+"/loss_plot"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    loss_plot(directory,"mse_losses",mse_losses)
+    loss_plot(directory,"positive_energys",positive_energys)
+    loss_plot(directory,"negative_energys",negative_energys)
+    loss_plot(directory,"cd_losses",cd_losses)
+    loss_plot(directory,"losses",losses)
 
-        model_name = "CDmodel_lr"+str(lr)+"_"+optimizer_lr_str
-        mse_losses, positive_energys, negative_energys,cd_losses, losses = train(
-            model, 
-            dataloader,
-            steps=5, 
-            epochs=100,
-            from_model_name = "",
-            lr=lr,
-            optimizer_lr=optimizer_lr,
-            demo=False,
-            use_cuda=True,
-            save_name = model_name
-            )
+    testing_dataset=rainy_dataset(data_path="large_datasets/rainy_image_dataset",data_subpath="testing",data_len=50, rainy_extent=DEFAULT_RAINY_EXTENT,normalize=True)
+    testing_dataloader = DataLoader(testing_dataset, batch_size = 1, shuffle=True)
 
-        file = open("model_loss_record/"+model_name+"_loss_record_"+str(3),"w")
-        for loss in losses:
-            file.write(str(loss))
-            file.write("\n")
-        file.close()
+    test("model_bundle/"+model_name,testing_dataloader,"rainy_image_dataset",DEFAULT_RAINY_EXTENT,lr,steps,use_cuda=True, cuda_index=5)
 
-        file = open("model_loss_record/"+model_name+"_MSEloss_record_"+str(3),"w")
-        for loss in mse_losses:
-            file.write(str(loss))
-            file.write("\n")
-        file.close()
-
-        file = open("model_loss_record/"+model_name+"_CDloss_record_"+str(3),"w")
-        for loss in cd_losses:
-            file.write(str(loss))
-            file.write("\n")
-        file.close()
-
-        file = open("model_loss_record/"+model_name+"_positive_energy_record_"+str(3),"w")
-        for loss in positive_energys:
-            file.write(str(loss))
-            file.write("\n")
-        file.close()
-
-        file = open("model_loss_record/"+model_name+"_negative_energy_record_"+str(3),"w")
-        for loss in negative_energys:
-            file.write(str(loss))
-            file.write("\n")
-        file.close()
-
-        model_test(
-            model_name=model_name,
-            lr=lr,
-            # loss_criterion="ssim",
-            test_dataset="rainy_image_dataset",
-            rainy_extent=3,
-            use_cuda = False
-        )
+if __name__ == "__main__":
+    for lambda_cd in [0.001,0.005,0.01,0.05,0.1]:
+        for lr in [0.5,0.1]:
+            for optimizer_lr in [0.001,0.005]:
+                model_name="model_lamCD"+str(lambda_cd).split('.')[1]+"_lr"+str(lr).split('.')[1]+"_optlr"+str(optimizer_lr).split('.')[1]
+                complete_training(model_name,lr=1,optimizer_lr=0.001,lambda_cd=0.01, lambda_reg=1e-4,steps=5,from_model="")
+    
 
         

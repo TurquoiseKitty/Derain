@@ -1,0 +1,104 @@
+nohup: ignoring input
+training model : model_three_continue
+lr : 1, opti_lr : 0.001, lam_cd : 0.01, lam_reg : 0.0001
+epoch :  0
+loss : 359.76 | pos eng: 9.72, neg eng: 26.24 | cd: -16.52 | mse: 346.01
+epoch :  1
+loss : 339.67 | pos eng: -0.36, neg eng: 87.96 | cd: -88.32 | mse: 327.83
+epoch :  2
+loss : 351.44 | pos eng: -85.09, neg eng: 30.50 | cd: -115.59 | mse: 344.14
+epoch :  3
+loss : 340.46 | pos eng: 22.45, neg eng: 52.40 | cd: -29.95 | mse: 331.26
+epoch :  4
+loss : 337.80 | pos eng: -2.35, neg eng: 49.07 | cd: -51.42 | mse: 327.92
+epoch :  5
+loss : 344.38 | pos eng: -80.55, neg eng: 13.55 | cd: -94.10 | mse: 330.25
+epoch :  6
+loss : 352.54 | pos eng: -36.85, neg eng: 13.57 | cd: -50.42 | mse: 341.30
+epoch :  7
+loss : 356.28 | pos eng: -72.92, neg eng: -4.43 | cd: -68.50 | mse: 348.10
+epoch :  8
+loss : 334.39 | pos eng: -38.60, neg eng: 15.81 | cd: -54.41 | mse: 328.29
+epoch :  9
+loss : 338.42 | pos eng: -50.91, neg eng: 30.15 | cd: -81.06 | mse: 332.30
+epoch :  10
+loss : 339.29 | pos eng: -71.87, neg eng: 41.73 | cd: -113.60 | mse: 332.49
+epoch :  11
+loss : 355.86 | pos eng: -82.00, neg eng: 21.93 | cd: -103.93 | mse: 343.95
+epoch :  12
+loss : 336.26 | pos eng: -66.90, neg eng: 13.09 | cd: -79.99 | mse: 326.87
+epoch :  13
+loss : 340.84 | pos eng: -40.09, neg eng: 22.49 | cd: -62.57 | mse: 330.13
+epoch :  14
+loss : 338.72 | pos eng: 14.97, neg eng: 21.09 | cd: -6.12 | mse: 330.68
+epoch :  15
+loss : 320.65 | pos eng: -0.32, neg eng: 28.67 | cd: -28.99 | mse: 313.84
+epoch :  16
+loss : 297.52 | pos eng: -40.47, neg eng: 2.79 | cd: -43.26 | mse: 286.08
+epoch :  17
+loss : 330.46 | pos eng: -34.73, neg eng: 22.76 | cd: -57.49 | mse: 322.23
+epoch :  18
+loss : 315.92 | pos eng: -22.73, neg eng: 16.70 | cd: -39.43 | mse: 305.91
+epoch :  19
+loss : 366.86 | pos eng: 51.67, neg eng: -75.66 | cd: 127.33 | mse: 351.06
+epoch :  20
+loss : 333.75 | pos eng: -25.91, neg eng: 2.57 | cd: -28.48 | mse: 322.39
+epoch :  21
+loss : 341.12 | pos eng: 17.30, neg eng: 53.22 | cd: -35.92 | mse: 320.96
+epoch :  22
+loss : 334.00 | pos eng: -43.90, neg eng: 17.13 | cd: -61.03 | mse: 326.78
+epoch :  23
+loss : 328.51 | pos eng: -39.91, neg eng: 1.74 | cd: -41.65 | mse: 319.35
+epoch :  24
+loss : 321.40 | pos eng: -43.90, neg eng: 30.76 | cd: -74.66 | mse: 313.63
+epoch :  25
+loss : 301.30 | pos eng: 32.17, neg eng: 41.96 | cd: -9.79 | mse: 292.75
+epoch :  26
+loss : 333.15 | pos eng: -60.33, neg eng: 98.43 | cd: -158.76 | mse: 322.46
+epoch :  27
+loss : 326.58 | pos eng: 21.46, neg eng: 59.04 | cd: -37.59 | mse: 314.79
+epoch :  28
+loss : 332.28 | pos eng: -59.74, neg eng: 10.09 | cd: -69.83 | mse: 327.29
+epoch :  29
+loss : 314.59 | pos eng: -0.87, neg eng: 8.54 | cd: -9.42 | mse: 307.33
+epoch :  30
+loss : 338.26 | pos eng: -10.51, neg eng: 19.63 | cd: -30.14 | mse: 326.39
+epoch :  31
+loss : 303.51 | pos eng: -2.69, neg eng: 28.94 | cd: -31.64 | mse: 294.99
+epoch :  32
+loss : 307.52 | pos eng: -17.06, neg eng: 25.67 | cd: -42.73 | mse: 296.67
+epoch :  33
+loss : 291.79 | pos eng: -48.15, neg eng: 21.31 | cd: -69.46 | mse: 283.26
+epoch :  34
+loss : 324.65 | pos eng: -51.42, neg eng: -0.48 | cd: -50.94 | mse: 314.03
+epoch :  35
+loss : 322.38 | pos eng: -16.64, neg eng: 43.88 | cd: -60.53 | mse: 311.53
+epoch :  36
+loss : 329.85 | pos eng: -83.23, neg eng: 41.37 | cd: -124.61 | mse: 321.02
+epoch :  37
+loss : 319.66 | pos eng: -8.72, neg eng: 15.77 | cd: -24.49 | mse: 309.88
+epoch :  38
+loss : 302.97 | pos eng: -39.41, neg eng: 62.41 | cd: -101.82 | mse: 299.62
+epoch :  39
+loss : 317.30 | pos eng: 11.86, neg eng: 76.71 | cd: -64.85 | mse: 308.69
+epoch :  40
+loss : 329.01 | pos eng: -57.42, neg eng: -21.28 | cd: -36.14 | mse: 320.25
+epoch :  41
+loss : 320.21 | pos eng: -59.15, neg eng: 44.86 | cd: -104.00 | mse: 309.11
+epoch :  42
+loss : 326.44 | pos eng: -62.56, neg eng: 30.83 | cd: -93.38 | mse: 318.79
+epoch :  43
+loss : 316.06 | pos eng: -45.18, neg eng: 42.00 | cd: -87.18 | mse: 303.14
+epoch :  44
+loss : 312.71 | pos eng: -38.77, neg eng: 22.27 | cd: -61.04 | mse: 304.09
+epoch :  45
+loss : 317.66 | pos eng: -45.20, neg eng: 17.18 | cd: -62.38 | mse: 310.34
+epoch :  46
+loss : 301.85 | pos eng: 33.82, neg eng: 34.74 | cd: -0.91 | mse: 291.26
+epoch :  47
+loss : 323.23 | pos eng: -63.38, neg eng: 24.70 | cd: -88.07 | mse: 314.44
+epoch :  48
+loss : 332.15 | pos eng: -32.03, neg eng: 40.16 | cd: -72.19 | mse: 327.52
+epoch :  49
+loss : 328.70 | pos eng: -27.47, neg eng: 73.01 | cd: -100.48 | mse: 323.28
+finish evaluation
