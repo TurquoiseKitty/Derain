@@ -83,3 +83,38 @@ def demo(
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
     show_concat_image(img_list,show=False,save=True,save_folder=img_dir,save_name="demo_"+demo_name)
+
+if __name__ == "__main__":
+    testing_dataset=rainy_dataset(data_path="large_datasets/rainy_image_dataset",data_subpath="testing",data_len=3, rainy_extent=10,normalize=True)
+    testing_dataloader = DataLoader(testing_dataset, batch_size = 1, shuffle=True)
+    count = 0
+    for ground_batch, rainy_batch in testing_dataloader:    
+        ground_image = ground_batch[0]
+        rainy_image = rainy_batch[0]
+
+        demo(
+            "model_bundle/model_GroupNorm_lamCD05_lr5_optlr001",
+            ground_image,
+            rainy_image,
+            0.5,
+            steps = 5,
+            demo_name="demo"+str(count)
+        )
+        demo(
+            "model_bundle/model_GroupNorm_lamCD05_lr1_optlr001",
+            ground_image,
+            rainy_image,
+            0.5,
+            steps = 5,
+            demo_name="demo"+str(count)
+        )
+        demo(
+            "model_bundle/model_GroupNorm_lamCD05_lr2_optlr001",
+            ground_image,
+            rainy_image,
+            0.5,
+            steps = 5,
+            demo_name="demo"+str(count)
+        )
+        
+        count += 1

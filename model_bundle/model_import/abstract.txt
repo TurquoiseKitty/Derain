@@ -1,8 +1,0 @@
-
-**********************************
-test model on dataset : rainy_image_dataset
-    with rainy extent : 3
-steps of inner loop : 5
-learning rate for inner loop : 1
-ssim loss : 0.62615454
-psnr loss : 24.28271

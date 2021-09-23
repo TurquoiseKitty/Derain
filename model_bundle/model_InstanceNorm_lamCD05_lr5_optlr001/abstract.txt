@@ -1,0 +1,18 @@
+model name : model_InstanceNorm_lamCD05_lr5_optlr001
+trained on dataset : rainy_image_dataset
+    with rainy extent : 3
+steps of inner loop : 5
+learning rate for inner loop : 0.5
+optimizer learning rate : 0.001
+lambda for cd loss : 0.05
+lambda for reg loss : 0.0001
+
+50 epochs are set 
+
+**********************************
+test model on dataset : rainy_image_dataset
+    with rainy extent : 3
+steps of inner loop : 5
+learning rate for inner loop : 0.5
+ssim loss : 0.6874082
+psnr loss : 27.525286

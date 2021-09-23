@@ -8,7 +8,7 @@ from misc import AverageMeter, MovingAverage
 from PIL import Image
 import numpy as np
 import os, sys, pdb
-from model import ResNetModel
+from ebm_model import ResNetModel
 
 def single_forward(fake_image_batch,model,steps,lr=1):
     model.zero_grad()
